@@ -19,10 +19,32 @@ bucket.prop()(function(props, b) {
   assert.equal(3, b.props.n_val)
 })
 
-bucket.prop('n_val', 2)(function(b) {
-  assert.equal(2, b.props.n_val)
-})
-
-bucket.prop({'n_val': 3})(function(b) {
+// ok, let's test it WITH http requests
+bucket.props = null
+bucket.prop('n_val')(function(n_val, b) {
+  assert.equal(3, n_val)
   assert.equal(3, b.props.n_val)
+
+  // get all values
+  bucket.props = null
+  bucket.prop()(function(props, b) {
+    assert.equal(3, props.n_val)
+    assert.equal(3, b.props.n_val)
+
+    // set a single value
+    bucket.prop('n_val', 2)(function(b) {
+      assert.equal(null, b.props)
+      b.prop()(function(props) {
+        assert.equal(2, props.n_val)
+
+        // set multiple values
+        bucket.prop({'n_val': 3})(function(b) {
+          assert.equal(null, b.props)
+          b.prop()(function(props) {
+            assert.equal(3, props.n_val)
+          })
+        })
+      })
+    })
+  })
 })

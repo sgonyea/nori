@@ -29,10 +29,10 @@ assert.equal('def',        cli.clientID)
 
 var headers = cli.headers()
 assert.ok(headers['User-Agent'].match(/Rhodes/))
-assert.equal('application/json', headers['Content-Type'])
+assert.equal('application/json', headers['content-type'])
 assert.equal('def',              headers['X-Riak-ClientId'])
 
-var headers = cli.headers({'Content-Type': 'text/plain'})
+var headers = cli.headers({'content-type': 'text/plain'})
 assert.ok(headers['User-Agent'].match(/Rhodes/))
-assert.equal('text/plain', headers['Content-Type'])
+assert.equal('text/plain', headers['content-type'])
 assert.equal('def',        headers['X-Riak-ClientId'])
