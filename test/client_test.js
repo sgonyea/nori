@@ -26,3 +26,13 @@ assert.equal(4567,         cli.port)
 assert.equal('/boom/',     cli.prefix)
 assert.equal('/map',       cli.mapred)
 assert.equal('def',        cli.clientID)
+
+var headers = cli.headers()
+assert.ok(headers['User-Agent'].match(/Rhodes/))
+assert.equal('application/json', headers['Content-Type'])
+assert.equal('def',              headers['X-Riak-ClientId'])
+
+var headers = cli.headers({'Content-Type': 'text/plain'})
+assert.ok(headers['User-Agent'].match(/Rhodes/))
+assert.equal('text/plain', headers['Content-Type'])
+assert.equal('def',        headers['X-Riak-ClientId'])
