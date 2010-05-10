@@ -54,6 +54,15 @@ Implemented API:
         ...
       })
 
+## REPL
+
+If you just want to dilly-dally around the Rhodes API, use repl:
+
+    $ node lib/repl.js
+    > var c = rhodes.client()
+    > var b = c.bucket('iron_mans')
+    > b.prop()(function(props) { sys.puts(sys.inspect(props)) })
+
 ## TODO
 
 * Better Error Handling
