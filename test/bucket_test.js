@@ -1,7 +1,7 @@
 var assert = require('assert')
-  , Client = require('../lib/client').Client
+  , rhodes = require('../lib')
 
-var cli = new Client()
+var cli = rhodes.client()
 
 var bucket = cli.bucket('iron_mans')
 assert.equal('iron_mans', bucket.name)

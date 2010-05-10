@@ -1,8 +1,8 @@
 var assert = require('assert')
-  , Client = require('../lib/client').Client
+  , rhodes = require('../lib')
   ,    sys = require('sys')
 
-var cli = new Client()
+var cli = rhodes.client()
 var bucket = cli.bucket('iron_mans')
 var mark_1 = bucket.build('mark_1')
 assert.equal('application/json', mark_1.contentType)
