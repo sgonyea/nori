@@ -41,21 +41,24 @@ Implemented API:
       sys.puts(armor.key)
     })
 
-Envisioned Map/Reduce API:
-
-    var Rhodes = require('path/to/rhodes')
-    var client = new Rhodes.client()
-
+    // POST /mapred
     client.mapReduce()
       // add whole bucket
       .add('iron_mans')
       // add single resource by bucket, key
       .add('iron_mans', 'mark_1')
       .link({'bucket': 'iron_mans'})
-      .map(function(v){ return [JSON.parse(v.values[0].data).title]; }, {'keep': true})
+      .map(function(v){ return [JSON.parse(v.values[0].data).title]; })
+      .reduce(function(values) { return values.sort() }, {'keep': true})
       .run(function(results) {
         ...
       })
+
+## TODO
+
+* Better Error Handling
+* Link walking and link map/reduce phases
+* MapReduce requests against local data (tests)
 
 ## Links
 
