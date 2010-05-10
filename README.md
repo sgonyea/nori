@@ -47,8 +47,11 @@ Envisioned Map/Reduce API:
     var client = new Rhodes.client()
 
     client.mapReduce()
-      .add('artists', 'Beatles')
-      .link({'bucket': 'albums'})
+      // add whole bucket
+      .add('iron_mans')
+      // add single resource by bucket, key
+      .add('iron_mans', 'mark_1')
+      .link({'bucket': 'iron_mans'})
       .map(function(v){ return [JSON.parse(v.values[0].data).title]; }, {'keep': true})
       .run(function(results) {
         ...
