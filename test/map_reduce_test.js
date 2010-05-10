@@ -7,13 +7,18 @@ var assert   = require('assert')
 var client = new Client()
 var bucket = client.bucket('goog')
 
-function getHighDay(value, keyData, arg) {
+function getHighs(value, keyData, arg) {
   var data = Riak.mapValuesJson(value)[0];
-  if(data.High && data.High > 501.00) {
-    return [value.key];
-  } else {
+  if(data.High > 501)
+    return [data.High];
+  else
     return [];
-  }
+}
+
+function sumHighs(values, arg) {
+  return [values.reduce(function(acc, high) {
+    return acc + high
+  }, 0)]
 }
 
 // taken from the Riak Fast Track
@@ -49,8 +54,8 @@ bucket.prop()(function(p, b) {
   assert.equal(items[1].key, mapred.inputs[1].key)
   assert.equal(items[2].key, mapred.inputs[2].key)
 
-  mapred.map(getHighDay, {keep: true})
-    .map(getHighDay)
+  mapred.map(getHighs, {keep: true})
+    .map(getHighs)
 
   assert.equal(2, mapred.phases.length)
   assert.equal('javascript', mapred.phases[0].options.language)
@@ -62,18 +67,41 @@ bucket.prop()(function(p, b) {
   // check the full body of the map/reduce request
   var body = mapred.body()
   assert.equal(60000, body.timeout)
+  assert.equal(1, body.query.length)
   assert.deepEqual(['goog', items[0].key], body.inputs[0])
   assert.deepEqual(['goog', items[1].key], body.inputs[1])
   assert.deepEqual(['goog', items[2].key], body.inputs[2])
-  assert.deepEqual({source: getHighDay, language: 'javascript', keep: true}, 
+  assert.deepEqual({source: getHighs, language: 'javascript', keep: true}, 
     body.query[0].map)
 
   // run the map/reduce function
   mapred.run(function(results) {
-    assert.ok(results.indexOf(items[1].key) > -1)
-    assert.ok(results.indexOf(items[2].key) > -1)
-    assert.equal(-1, results.indexOf(items[0].key))
-  })
+    assert.equal(2, results.length)
+    assert.ok(results.indexOf(526.52) > -1)
+    assert.ok(results.indexOf(526.50) > -1)
 
-  bucket.clear()()
+    // now, let's run a map + reduce function
+    mapred.reduce(sumHighs, {keep: true})
+    mapred.reduce(sumHighs)
+    assert.equal(3, mapred.phases.length)
+    assert.equal('javascript', mapred.phases[1].options.language)
+    assert.equal('javascript', mapred.phases[2].options.language)
+    assert.ok( mapred.phases[1].options.keep)
+    assert.ok(!mapred.phases[2].options.keep)
+    mapred.phases.pop()
+    mapred.phases[0].options.keep = false // don't keep initial map phase
+
+    // check body with map + reduce
+    var body = mapred.body()
+    assert.equal(2, body.query.length)
+    assert.deepEqual({source: sumHighs, language: 'javascript', keep: true}, 
+      body.query[1].reduce)
+
+    // run the map/reduce function
+    mapred.run(function(results) {
+      assert.equal(526.52+526.50, results[0])
+
+      bucket.clear()()
+    })
+  })
 })
