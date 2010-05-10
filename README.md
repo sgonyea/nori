@@ -2,15 +2,22 @@
 
 Riak HTTP Client for Node.js, inspired by Ripple.
 
-Envisioned API:
+Since most of the functions make HTTP client calls, they return anonymous
+functions that take a single callback argument.
 
-    var Rhodes = require('path/to/rhodes')
-    var client = new Rhodes.client()
+Implemented API:
 
-    var bucket = client.bucket('iron_mans')
+    var Rhodes = require('rhodes')
+      , client = new Rhodes.client()
+      , bucket = client.bucket('iron_mans')
 
     // get a property
-    bucket.prop('name')(function(props) {
+    bucket.prop('name')(function(name) {
+      sys.puts(name)
+    })
+
+    // get all properties
+    bucket.prop()(function(props) {
       sys.puts(props.name)
     })
 
@@ -20,16 +27,24 @@ Envisioned API:
     // set multiple properties
     bucket.prop(n_val: 2, allow_mult: true)()
 
-    bucket.get('mark_1')(function(armor) { // GET /iron_mans/mark_1
+    // GET /iron_mans/mark_1
+    bucket.fetch('mark_1')(function(armor) { 
       armor.data = '...'
-      armor.store()
+      armor.store()()
     }) 
 
-    var new_armor = bucket.new('extremis', {'content-type': 'application/exoskeleton'})
+    // PUT /iron_mans/extremis
+    var new_armor = bucket.build('extremis', 
+      {'content-type': 'application/exoskeleton'})
     new_armor.data = '...'
-    new_armor.store()(function(blah) { // PUT /iron_mans/extremis
-      
+    new_armor.store()(function(armor) {
+      sys.puts(armor.key)
     })
+
+Envisioned Map/Reduce API:
+
+    var Rhodes = require('path/to/rhodes')
+    var client = new Rhodes.client()
 
     client.mapReduce()
       .add('artists', 'Beatles')

@@ -42,6 +42,12 @@ bucket.prop('n_val')(function(n_val, b) {
           assert.equal(null, b.props)
           b.prop()(function(props) {
             assert.equal(3, props.n_val)
+
+            // check reload
+            bucket.props.n_val = 1
+            bucket.reload()(function(b) {
+              assert.equal(3, b.props.n_val)
+            })
           })
         })
       })
