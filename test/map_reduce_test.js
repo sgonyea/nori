@@ -1,10 +1,10 @@
 var assert   = require('assert')
-  , rhodes   = require('../lib')
-  ,    sys   = require('sys')
+  ,   nori   = require('../lib')
+  ,      sys = require('sys')
   , riakUtil = require('../lib/riak')
   ,     Riak = riakUtil.Riak
 
-var client = rhodes.client()
+var client = nori.client()
 var bucket = client.bucket('goog')
 
 function getHighs(value, keyData, arg) {

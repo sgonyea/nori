@@ -1,9 +1,9 @@
 var assert = require('assert')
-  , rhodes = require('../lib')
+  ,   nori = require('../lib')
   ,    sys = require('sys')
 
-var cli = rhodes.client()
-var bucket = cli.bucket('iron_mans')
+var cli = nori.client()
+var bucket = cli.bucket('armor')
 var mark_1 = bucket.build('mark_1')
 assert.equal('application/json', mark_1.contentType)
 

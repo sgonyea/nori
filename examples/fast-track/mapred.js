@@ -1,9 +1,9 @@
-var rhodes = require('../../lib')
+var nori = require('../../lib')
   ,    sys = require('sys')
 
-rhodes.Client.defaultPort = 8091
+nori.Client.defaultPort = 8091
 
-var client = rhodes.client()
+var client = nori.client()
   , mapred = client.mapReduce()
   .add('goog')
   .map(function(value) {

@@ -1,10 +1,10 @@
 var assert = require('assert')
-  , rhodes = require('../lib')
+  ,   nori = require('../lib')
 
-var cli = rhodes.client()
+var cli = nori.client()
 
-var bucket = cli.bucket('iron_mans')
-assert.equal('iron_mans', bucket.name)
+var bucket = cli.bucket('armor')
+assert.equal('armor', bucket.name)
 assert.equal(cli,         bucket.client)
 assert.equal(null,        bucket.props)
 

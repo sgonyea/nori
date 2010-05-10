@@ -7,9 +7,9 @@ functions that take a single callback argument.
 
 Implemented API:
 
-    var Rhodes = require('rhodes')
-      , client = new Rhodes.client()
-      , bucket = client.bucket('iron_mans')
+    var   nori = require('nori')
+      , client = new nori.client()
+      , bucket = client.bucket('armor')
 
     // get a property
     bucket.prop('name')(function(name) {
@@ -27,13 +27,13 @@ Implemented API:
     // set multiple properties
     bucket.prop(n_val: 2, allow_mult: true)()
 
-    // GET /iron_mans/mark_1
+    // GET /armor/mark_1
     bucket.fetch('mark_1')(function(armor) { 
       armor.data = '...'
       armor.store()()
     }) 
 
-    // PUT /iron_mans/extremis
+    // PUT /armor/extremis
     var new_armor = bucket.build('extremis', 
       {'content-type': 'application/exoskeleton'})
     new_armor.data = '...'
@@ -44,10 +44,10 @@ Implemented API:
     // POST /mapred
     client.mapReduce()
       // add whole bucket
-      .add('iron_mans')
+      .add('armor')
       // add single resource by bucket, key
-      .add('iron_mans', 'mark_1')
-      .link({'bucket': 'iron_mans'})
+      .add('armor', 'mark_1')
+      .link({'bucket': 'armor'})
       .map(function(v){ return [JSON.parse(v.values[0].data).title]; })
       .reduce(function(values) { return values.sort() }, {'keep': true})
       .run(function(results) {
@@ -59,8 +59,8 @@ Implemented API:
 If you just want to dilly-dally around the Rhodes API, use repl:
 
     $ node lib/repl.js
-    > var c = rhodes.client()
-    > var b = c.bucket('iron_mans')
+    > var c = nori.client()
+    > var b = c.bucket('armor')
     > b.prop()(function(props) { sys.puts(sys.inspect(props)) })
 
 ## TODO

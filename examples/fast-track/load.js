@@ -1,11 +1,11 @@
-var rhodes = require('../../lib')
-  ,    sys = require('sys')
-  ,     fs = require('fs')
+var nori = require('../../lib')
+  ,  sys = require('sys')
+  ,   fs = require('fs')
 
-rhodes.Client.defaultPort = 8091
+nori.Client.defaultPort = 8091
 
 if(fs.statSync('goog.csv').isFile()) {
-  var client = rhodes.client()
+  var client = nori.client()
     , bucket = client.bucket('goog')
   fs.readFile('goog.csv', function(err, data) {
     var lines = data.split("\n")
