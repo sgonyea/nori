@@ -1,5 +1,5 @@
 var nori = require('../../lib')
-  ,    sys = require('sys')
+  ,  sys = require('sys')
 
 nori.Client.defaultPort = 8091
 
