@@ -14,16 +14,20 @@ var deleted = -1
 
 // store resource with key
 mark_1.data = {pilot: 'stark'}
+mark_1.link({'bucket':'armor', key:'mark_1', tag: 'self'})
 mark_1.store()(function(res) {
   assert.equal('stark', res.data.pilot)
 
   // fetch resource
   bucket.fetch('mark_1')(function(res) {
-    assert.equal(1, res.links.length)
+    assert.equal(2,           res.links.length)
     assert.equal(res,         res.links[0].source)
-    assert.equal('up',        res.links[0].rel)
+    assert.equal('self',      res.links[0].tag)
     assert.equal(bucket.name, res.links[0].bucket.name)
-    assert.equal(null,        res.links[0].resource)
+    assert.equal(res,         res.links[1].source)
+    assert.equal('up',        res.links[1].rel)
+    assert.equal(bucket.name, res.links[1].bucket.name)
+    assert.equal(null,        res.links[1].resource)
 
     assert.equal('stark', res.data.pilot)
 
