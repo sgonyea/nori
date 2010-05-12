@@ -19,6 +19,12 @@ mark_1.store()(function(res) {
 
   // fetch resource
   bucket.fetch('mark_1')(function(res) {
+    assert.equal(1, res.links.length)
+    assert.equal(res,         res.links[0].source)
+    assert.equal('up',        res.links[0].rel)
+    assert.equal(bucket.name, res.links[0].bucket.name)
+    assert.equal(null,        res.links[0].resource)
+
     assert.equal('stark', res.data.pilot)
 
     // store resource without key
