@@ -1,4 +1,4 @@
-# Rhodes
+# Nori
 
 Riak HTTP Client for Node.js, inspired by Ripple.
 
