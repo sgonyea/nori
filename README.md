@@ -56,7 +56,7 @@ Implemented API:
 
 ## REPL
 
-If you just want to dilly-dally around the Rhodes API, use repl:
+If you just want to dilly-dally around the Nori API, use repl:
 
     $ node lib/repl.js
     > var c = nori.client()
